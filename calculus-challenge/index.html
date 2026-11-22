@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculus Unlock Challenge | Domain • Holes • Asymptotes • Limits</title>
+  <style>
+    :root {
+      --bg-base: #070d19;
+      --card-bg: rgba(15, 23, 42, 0.92);
+      --panel-bg: rgba(30, 41, 59, 0.88);
+      --border: rgba(148, 163, 184, 0.22);
+      --accent: #38bdf8;
+      --accent-2: #818cf8;
+      --success: #4ade80;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.16), transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(129, 140, 248, 0.16), transparent 45%),
+        radial-gradient(circle at 50% 88%, rgba(34, 197, 94, 0.10), transparent 48%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+      color: #f8fafc;
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      overflow-x: hidden;
+      animation: ambientShift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientShift {
+      0% {
+        background-position: 0% 0%, 100% 0%, 50% 100%, 0 0, 0 0;
+      }
+      100% {
+        background-position: 12% 8%, 88% 14%, 45% 85%, 0 0, 0 0;
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes codePulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 18px 2px rgba(56, 189, 248, 0.28);
+      }
+    }
+
+    @keyframes teacherTalk {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      25% {
+        transform: translateY(-3px) scale(1.03);
+      }
+      50% {
+        transform: translateY(0) scale(0.98);
+      }
+      75% {
+        transform: translateY(-2px) scale(1.02);
+      }
+    }
+
+    .container {
+      max-width: 760px;
+      width: 100%;
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(56, 189, 248, 0.08);
+      animation: fadeSlideUp 0.35s ease-out;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.65rem;
+      background: linear-gradient(90deg, #38bdf8, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .progress {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      animation: fadeSlideUp 0.28s ease-out;
+    }
+
+    .card:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .activation-welcome {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    .activation-welcome p {
+      margin: 0 0 8px;
+    }
+
+    .activation-welcome p:last-child {
+      margin-bottom: 0;
+    }
+
+    button.audio-btn {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    .question {
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    label.option {
+      display: block;
+      padding: 10px 12px;
+      margin: 6px 0;
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.15s ease;
+    }
+
+    label.option:hover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.09);
+      transform: translateX(2px);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: rgba(15, 23, 42, 0.85);
+      color: #f8fafc;
+      font-size: 1rem;
+      margin-top: 8px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    button {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(2, 132, 199, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.next-btn {
+      background: linear-gradient(135deg, #16a34a, #059669);
+      margin-left: 8px;
+    }
+
+    button.next-btn:hover {
+      box-shadow: 0 8px 18px rgba(22, 163, 74, 0.3);
+    }
+
+    button.print-btn {
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+    }
+
+    button.print-btn:hover {
+      box-shadow: 0 8px 18px rgba(124, 58, 237, 0.32);
+    }
+
+    button.speak-btn {
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    button.praise-btn {
+      background: linear-gradient(135deg, #16a34a, #059669);
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .alert {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-weight: 500;
+      line-height: 1.5;
+      animation: fadeSlideUp 0.25s ease-out;
+    }
+
+    .alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    .alert.success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid #22c55e;
+      color: #86efac;
+    }
+
+    .teacher-box {
+      margin: 16px 0;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(244, 63, 94, 0.12);
+      border: 1px solid rgba(251, 113, 133, 0.65);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      animation: fadeSlideUp 0.3s ease-out;
+    }
+
+    .teacher-box.praise {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(74, 222, 128, 0.65);
+    }
+
+    .teacher-avatar {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fb7185, #e11d48);
+      border: 2px solid #fecdd3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 6px 16px rgba(225, 29, 72, 0.35);
+    }
+
+    .teacher-avatar.praise {
+      background: linear-gradient(135deg, #4ade80, #16a34a);
+      border: 2px solid #bbf7d0;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+    }
+
+    .teacher-avatar.talking {
+      animation: teacherTalk 0.45s ease-in-out infinite;
+    }
+
+    .teacher-speech {
+      flex: 1;
+    }
+
+    .teacher-name {
+      font-weight: 700;
+      color: #fda4af;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    .teacher-name.praise {
+      color: #86efac;
+    }
+
+    .teacher-quote {
+      background: rgba(15, 23, 42, 0.78);
+      border-left: 3px solid #fb7185;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #fff1f2;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .teacher-quote.praise {
+      border-left-color: #4ade80;
+      color: #f0fdf4;
+    }
+
+    .lms-banner {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      color: #e0f2fe;
+      line-height: 1.55;
+    }
+
+    .lms-banner ol {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .lms-banner li {
+      margin-bottom: 4px;
+    }
+
+    .code-badge {
+      display: inline-block;
+      background: #0f172a;
+      border: 1px dashed var(--accent);
+      color: var(--accent);
+      font-family: monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin: 4px 0;
+      animation: codePulse 2.4s ease-in-out infinite;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+    }
+
+    .summary-table th, .summary-table td {
+      border: 1px solid #334155;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .summary-table th {
+      background: #1e293b;
+      color: var(--accent);
+    }
+
+    .summary-table tfoot td {
+      background: #1e293b;
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body, .container, .card, .alert, .code-badge, button, label.option, .teacher-avatar.talking {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 0;
+        animation: none !important;
+      }
+      .container {
+        max-width: 100%;
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        border: none;
+        box-shadow: none;
+        padding: 12px;
+        animation: none !important;
+      }
+      h1 {
+        background: none !important;
+        -webkit-text-fill-color: #0f172a !important;
+        color: #0f172a !important;
+      }
+      .card {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1;
+        animation: none !important;
+      }
+      .progress {
+        background: #f1f5f9 !important;
+        color: #111827 !important;
+        border: 1px solid #cbd5e1;
+      }
+      .teacher-box, .teacher-box.praise {
+        background: #f8fafc !important;
+        border: 1px solid #475569;
+        color: #111827 !important;
+      }
+      .teacher-name, .teacher-name.praise {
+        color: #0f172a !important;
+      }
+      .teacher-quote, .teacher-quote.praise {
+        background: #ffffff !important;
+        color: #111827 !important;
+      }
+      .lms-banner {
+        background: #f0f9ff !important;
+        border: 1px solid #0284c7;
+        color: #0f172a !important;
+      }
+      .code-badge {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #475569;
+        animation: none !important;
+      }
+      .summary-table th, .summary-table td, .summary-table tfoot td {
+        border: 1px solid #cbd5e1;
+        color: #111827 !important;
+      }
+      .summary-table th, .summary-table tfoot td {
+        background: #f1f5f9 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculus Unlock Challenge</h1>
+    <div class="subtitle">Domain • Holes • Vertical Asymptotes • Limits (Forward-Only • 10 Questions per Stage)</div>
+
+    <div class="progress">
+      <span id="stageLabel">Check-in Required</span>
+      <span id="indexDisplay"></span>
+    </div>
+
+    <!-- STAGE 0: CHECK-IN -->
+    <div id="checkinView" class="card">
+      <div class="activation-welcome">
+        <p>Hi. Welcome to the activation page of your task for the day. There are four stages in all. To activate stage one, you need to put in your correct index number, as well as the correct activation code for task one.</p>
+        <p>And the correct activation code has already been shared with you—in case you've forgotten, it's <strong>CALC-START</strong> (<strong>C-A-L-C</strong>, which is a short form of calculus, and then <strong>START</strong>; everything is in caps with a hyphen in between the two words and no spacing). All right. All the best.</p>
+        <video id="activationVideoAudio" src="Welcome.MP4" preload="none" class="hidden"></video>
+        <button type="button" class="audio-btn" onclick="playActivationVoice()">🔊 Play Activation Voice</button>
+      </div>
+
+      <div class="question">Enter your index number and the Zoom check-in code:</div>
+      <input type="text" id="indexNumber" placeholder="Index Number (e.g., 10248591)" />
+      <input type="text" id="checkinCode" placeholder="Check-in Code (e.g., CALC-START)" />
+      <button onclick="verifyCheckin()">Verify &amp; Start Challenge →</button>
+      <div id="checkinFeedback"></div>
+    </div>
+
+    <!-- GATE BETWEEN STAGES (FORWARD ONLY) -->
+    <div id="gateView" class="card hidden">
+      <div class="question" id="gatePrompt">Enter the unlock code you just earned to open the next stage:</div>
+      <input type="text" id="stageCodeInput" placeholder="Enter Unlock Code" />
+      <button onclick="unlockNextStage()">Unlock Stage →</button>
+      <div id="gateFeedback"></div>
+    </div>
+
+    <!-- STAGE QUESTIONS -->
+    <div id="stageView" class="hidden">
+      <h2 id="stageTitle" style="color:#38bdf8; margin-top:0;"></h2>
+      <p id="stageDesc" style="color:#cbd5e1;"></p>
+      <div id="questionsContainer"></div>
+      <button id="completeBtn" onclick="completeStage()">Complete Stage &amp; Reveal Code</button>
+      <button id="proceedBtn" class="next-btn hidden" onclick="goToGate()">Enter Earned Code →</button>
+      <div id="stageFeedback"></div>
+    </div>
+
+    <!-- FINAL COMPLETION & PRINTABLE PDF REPORT -->
+    <div id="completeView" class="card hidden">
+      <h2 style="color:#4ade80; margin-top:0;">Mission Complete — Official Results Summary</h2>
+      <p><strong>Index Number:</strong> <span id="reportIndexNumber"></span></p>
+      <p><strong>Total Score:</strong> <span id="reportTotalScore"></span></p>
+      <p><strong>Completed At:</strong> <span id="reportTimestamp"></span></p>
+      <p><strong>Final Completion Code:</strong> <span class="code-badge">CALCULUS-MASTER</span></p>
+
+      <!-- TALKING MATH TEACHER (SHOWN WHEN TOTAL SCORE < 35) -->
+      <div id="teacherReactionBox" class="teacher-box hidden">
+        <div id="teacherAvatar" class="teacher-avatar" aria-hidden="true">👩‍🏫</div>
+        <div class="teacher-speech">
+          <div class="teacher-name">Ms. Calculus (Your Math Teacher) — Score Below 35 Alert</div>
+          <div id="teacherQuoteText" class="teacher-quote"></div>
+          <video id="lowScoreVideoAudio" src="not good.MP4" preload="none" class="hidden"></video>
+          <div class="no-print">
+            <button type="button" class="speak-btn" onclick="speakTeacherLine()">🔊 Play Voice</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TALKING MATH TEACHER (SHOWN WHEN TOTAL SCORE >= 35) -->
+      <div id="teacherPraiseBox" class="teacher-box praise hidden">
+        <div id="teacherPraiseAvatar" class="teacher-avatar praise" aria-hidden="true">👩‍🏫</div>
+        <div class="teacher-speech">
+          <div class="teacher-name praise">Ms. Calculus (Your Math Teacher) — Score 35+ Celebration</div>
+          <div id="teacherPraiseText" class="teacher-quote praise"></div>
+          <video id="praiseVideoAudio" src="good job.MP4" preload="none" class="hidden"></video>
+          <div class="no-print">
+            <button type="button" class="praise-btn" onclick="playPraiseVoice()">🔊 Play Praise Voice</button>
+          </div>
+        </div>
+      </div>
+
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Status</th>
+            <th>Score</th>
+            <th>Unlock Code</th>
+          </tr>
+        </thead>
+        <tbody id="summaryRows"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Overall Score (All 4 Stages)</td>
+            <td id="tableTotalScore">0/40 (0%)</td>
+            <td>CALCULUS-MASTER</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="lms-banner">
+        <strong>Next Task — Upload Your PDF to the School's LMS:</strong>
+        <ol>
+          <li>Click <strong>Print / Save Results as PDF</strong> below to open the print dialog.</li>
+          <li>Select <strong>Save as PDF</strong> (or Microsoft Print to PDF) and save the file showing your <strong>Index Number</strong> and <strong>Score</strong>.</li>
+          <li>Go to your <strong>school's LMS</strong> submission dropbox for this Calculus session and <strong>upload the saved PDF</strong> as your official completion record.</li>
+        </ol>
+      </div>
+
+      <button class="print-btn no-print" onclick="window.print()">Print / Save Results as PDF</button>
+    </div>
+  </div>
+
+  <script>
+    const CHECKIN_CODE = "CALC-START";
+    const ACTIVATION_VOICE_MESSAGE =
+      "Hi. Welcome to the activation page of your task for the day. There are four stages in all. To activate stage one, you need to put in your correct index number, as well as the correct activation code for task one. And the correct activation code has already been shared with you, in case you've forgotten, it's CALC-START. C-A-L-C, which is a short form of calculus, and then START. Everything is in caps with a hyphen in between the two words and no spacing. All right. All the best.";
+    const TEACHER_LOW_SCORE_MESSAGE =
+      "Geez dude. That is the best you could do after five straight weeks of nonstop talking. This is how you choose to embarrass me. Wow, that is funny, real funny but not like haha, haha funny. Thank you very much, thank you.";
+    const TEACHER_HIGH_SCORE_MESSAGE =
+      "Well, you should be very proud of yourself for the day. That's an impressive work done. Very good job done. All right. So I'm very proud of you. Keep up the good work and show up with consistency every day. Okay. Good job.";
+
+    const stages = [
+      {
+        title: "Stage 1: Domain Detective (10 Questions)",
+        desc: "Identify excluded values, radicand restrictions, and valid domains. You can progress even if some answers are missed.",
+        unlockCodeAfter: "DOMAIN-UNLOCK",
+        questions: [
+          {
+            q: "Q1. What is the domain of f(x) = (x + 2) / (x - 5)?",
+            options: ["All real numbers except x = 5", "All real numbers except x = -2", "All real numbers x > 5", "All real numbers"],
+            answer: 0
+          },
+          {
+            q: "Q2. Which values are excluded from the domain of g(x) = 1 / (x² - 9)?",
+            options: ["x = 9 only", "x = 3 and x = -3", "x = 0 and x = 9", "No values are excluded"],
+            answer: 1
+          },
+          {
+            q: "Q3. What is the domain of h(x) = √(x + 4)?",
+            options: ["x > -4", "x ≥ -4", "x ≠ -4", "All real numbers"],
+            answer: 1
+          },
+          {
+            q: "Q4. What is the domain of p(x) = (x² - 4) / (x - 2)?",
+            options: ["All real numbers except x = 2", "All real numbers except x = -2 and x = 2", "x > 2", "All real numbers"],
+            answer: 0
+          },
+          {
+            q: "Q5. Which x-values must be excluded from the domain of r(x) = (x + 1) / (x² - 5x + 6)?",
+            options: ["x = -2 and x = -3", "x = 2 and x = 3", "x = 1 and x = 6", "x = 5 only"],
+            answer: 1
+          },
+          {
+            q: "Q6. What is the domain of m(x) = √(7 - x)?",
+            options: ["x ≥ 7", "x ≤ 7", "x > 7", "x ≠ 7"],
+            answer: 1
+          },
+          {
+            q: "Q7. What is the domain of q(x) = 5 / (x² + 4) for real numbers x?",
+            options: ["All real numbers except x = ±2", "All real numbers except x = -4", "All real numbers", "x > 0"],
+            answer: 2
+          },
+          {
+            q: "Q8. What is the domain of t(x) = √(x - 3) / (x - 5)?",
+            options: ["x ≥ 3", "x ≥ 3 and x ≠ 5", "x > 3 and x ≠ 5", "x ≠ 5"],
+            answer: 1
+          },
+          {
+            q: "Q9. Why is x = -3 excluded from the domain of f(x) = (x + 3) / (x + 3)?",
+            options: ["Because the numerator becomes zero", "Because the denominator becomes zero (division by zero)", "Because the square root is negative", "It is not excluded"],
+            answer: 1
+          },
+          {
+            q: "Q10. What is the domain of k(x) = 1 / (x³ - 4x)?",
+            options: ["All real numbers except x = 0, 2, -2", "All real numbers except x = 0 and 4", "x > 2", "All real numbers except x = 2"],
+            answer: 0
+          }
+        ]
+      },
+      {
+        title: "Stage 2: Vertical Asymptotes (10 Questions)",
+        desc: "Determine where vertical asymptotes occur and analyze infinite behavior near those x-values.",
+        unlockCodeAfter: "GRAPH-UNLOCK",
+        questions: [
+          {
+            q: "Q1. Which function has a vertical asymptote at x = 3?",
+            options: ["f(x) = (x - 3)/(x + 3)", "f(x) = (x² - 9)/(x - 3)", "f(x) = (x + 1)/(x - 3)", "f(x) = (x - 3)(x + 2)/(x - 3)"],
+            answer: 2
+          },
+          {
+            q: "Q2. For g(x) = (x + 2) / ((x - 1)(x + 2)), what happens at x = -2?",
+            options: ["Vertical asymptote", "Hole", "Both a hole and a
